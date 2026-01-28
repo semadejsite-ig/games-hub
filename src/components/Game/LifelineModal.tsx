@@ -9,7 +9,7 @@ interface LifelineModalProps {
 export function LifelineModal({ result, onClose }: LifelineModalProps) {
     if (!result) return null;
 
-    const getLetter = (i: number) => ['A', 'B', 'C', 'D'][i];
+    const getLabel = (i: number) => (i + 1).toString();
 
     return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
@@ -34,7 +34,7 @@ export function LifelineModal({ result, onClose }: LifelineModalProps) {
                                 <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-2 w-4 h-4 bg-slate-950 border-t border-l border-slate-800 rotate-45"></div>
 
                                 <p className="text-lg text-gray-200 italic">
-                                    "Irmão, eu estudei bastante sobre isso. Eu tenho quase certeza que a resposta correta é a letra <strong className="text-yellow-400 text-xl">{getLetter(result.suggestion!)}</strong>."
+                                    "Irmão, eu estudei bastante sobre isso. Eu tenho quase certeza que a resposta correta é a número <strong className="text-yellow-400 text-xl">{getLabel(result.suggestion!)}</strong>."
                                 </p>
                             </div>
                         </>
@@ -50,7 +50,7 @@ export function LifelineModal({ result, onClose }: LifelineModalProps) {
                             <div className="space-y-4">
                                 {result.stats!.map((percentage, index) => (
                                     <div key={index} className="flex items-center gap-3">
-                                        <span className="font-bold w-6 text-gray-400">{getLetter(index)}</span>
+                                        <span className="font-bold w-6 text-gray-400">{getLabel(index)}</span>
                                         <div className="flex-1 h-8 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
                                             <div
                                                 className="h-full bg-blue-600 flex items-center justify-end px-2 transition-all duration-1000 ease-out"

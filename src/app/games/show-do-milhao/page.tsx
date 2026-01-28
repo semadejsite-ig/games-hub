@@ -8,11 +8,20 @@ import { createClient } from '@/lib/supabase';
 import { QuestionCard } from '@/components/Game/QuestionCard';
 import { AnswerButton } from '@/components/Game/AnswerButton';
 import { Lifelines } from '@/components/Game/Lifelines';
+import { LifelineModal } from '@/components/Game/LifelineModal';
 import { MoneyLadder } from '@/components/Game/MoneyLadder';
 
 export default function GamePage() {
     const router = useRouter();
-    const { gameState, currentQuestion, handleAnswer, handleStop, useLifeline, restartGame } = useGameState();
+    const {
+        gameState,
+        currentQuestion,
+        handleAnswer,
+        handleStop,
+        useLifeline,
+        closeLifelineModal,
+        restartGame
+    } = useGameState();
     const [selectedOption, setSelectedOption] = useState<number | null>(null);
 
     // Auth & Score Saving
@@ -73,6 +82,20 @@ export default function GamePage() {
                 <p className="text-2xl mb-8">
                     Prêmio Final: {gameState.accumulatedMoney.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
                 </p>
+
+                {gameState.status === 'lost' && currentQuestion && (
+                    <div className="bg-red-900/30 border border-red-800 p-6 rounded-xl max-w-lg mb-8">
+                        <p className="text-gray-300 text-sm uppercase mb-2">A resposta certa era:</p>
+                        <p className="text-xl font-bold text-white mb-2">
+                            Opção {currentQuestion.correctOptionIndex + 1}: {currentQuestion.options[currentQuestion.correctOptionIndex]}
+                        </p>
+                        {currentQuestion.correctDetails && (
+                            <p className="text-yellow-400 italic text-sm border-t border-red-800/50 pt-2 mt-2">
+                                💡 {currentQuestion.correctDetails}
+                            </p>
+                        )}
+                    </div>
+                )}
                 <div className="flex gap-4">
                     <button onClick={restartGame} className="bg-yellow-500 text-blue-900 px-8 py-3 rounded-full font-bold text-xl hover:bg-yellow-400">
                         Jogar Novamente
@@ -134,6 +157,12 @@ export default function GamePage() {
 
                 {/* Lifelines & Controls */}
                 <Lifelines lifelines={gameState.lifelines} onUse={useLifeline} disabled={selectedOption !== null} />
+
+                {/* Modal for Pastor/Irmãos */}
+                <LifelineModal
+                    result={gameState.lifelineResult}
+                    onClose={closeLifelineModal}
+                />
 
                 <button
                     onClick={handleStop}

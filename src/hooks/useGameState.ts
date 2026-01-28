@@ -171,6 +171,7 @@ export const useGameState = () => {
 
     // Handle Lifelines
     const useLifeline = (type: LifelineType) => {
+        console.log("Using lifeline:", type, gameState.lifelines[type]);
         if (!gameState.lifelines[type].available) return;
         if (!currentQuestion) return;
 
@@ -187,6 +188,7 @@ export const useGameState = () => {
                 setGameState(prev => ({
                     ...prev,
                     lifelineResult: null,
+                    eliminatedOptions: [], // Reset 50/50 on skip
                     lifelines: {
                         ...prev.lifelines,
                         [type]: {

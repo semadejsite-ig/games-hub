@@ -23,15 +23,20 @@ export function MoneyLadder({ currentLevel }: MoneyLadderProps) {
                         <div
                             key={step.level}
                             className={`
-                flex justify-between items-center px-3 py-1 rounded
-                ${isActive ? 'bg-yellow-600 text-white font-bold scale-105 origin-left' : ''}
-                ${isPast ? 'text-green-400' : 'text-gray-400'}
+                flex justify-between items-center px-3 py-1 rounded transition-all
+                ${isActive ? 'bg-yellow-600 text-white font-bold scale-105 origin-left shadow-lg shadow-yellow-900/50' : ''}
+                ${isPast ? 'text-green-400 opacity-60' : 'text-gray-400'}
                 ${!isActive && !isPast ? 'text-white' : ''}
               `}
                         >
-                            <span className="text-xs">{step.level}</span>
-                            <span className="font-mono">
-                                {step.prize.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 })}
+                            <div className="flex items-center gap-3">
+                                <span className={`text-xs w-6 text-center ${isActive ? 'bg-black/20 rounded' : ''}`}>{step.level}</span>
+                                <span className="text-sm font-medium hidden xl:inline-block max-w-[120px] truncate" title={step.title}>
+                                    {step.title}
+                                </span>
+                            </div>
+                            <span className="font-mono text-sm">
+                                {(step.prize / 1000).toLocaleString('pt-BR')}k
                             </span>
                         </div>
                     );

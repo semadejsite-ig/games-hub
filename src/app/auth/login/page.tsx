@@ -171,22 +171,15 @@ export default function LoginPage() {
                                 <div className="relative flex justify-center text-xs uppercase"><span className="bg-slate-900 px-2 text-gray-500">Ou continue com</span></div>
                             </div>
 
-                            <button
-                                onClick={handleGoogleLogin}
-                                className="w-full bg-white text-slate-900 font-bold py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-100 transition-colors"
-                            >
-                                <img src="https://www.google.com/favicon.ico" alt="G" className="w-4 h-4" />
-                                Google
-                            </button>
-                        </>
+                        </div>
+                </>
                     )}
 
-                    {mode === 'forgot' && (
-                        <button onClick={() => setMode('login')} className="block w-full text-center text-gray-500 hover:text-white text-sm mt-6">
-                            Voltar para Login
-                        </button>
-                    )}
-                </div>
+                {mode === 'forgot' && (
+                    <button onClick={() => setMode('login')} className="block w-full text-center text-gray-500 hover:text-white text-sm mt-6">
+                        Voltar para Login
+                    </button>
+                )}
             </div>
         </div>
     );

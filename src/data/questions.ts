@@ -83,12 +83,20 @@ export const QUESTIONS: Question[] = [
 ];
 
 export const PRIZE_LADDER = [
-    { level: 1, prize: 1000, stop: 0, wrong: 0 },
-    { level: 2, prize: 2000, stop: 1000, wrong: 500 },
-    { level: 3, prize: 3000, stop: 2000, wrong: 1000 },
-    { level: 4, prize: 4000, stop: 3000, wrong: 1500 },
-    { level: 5, prize: 5000, stop: 4000, wrong: 2000 },
-    // ... Simplified ladder for now, can expand later
-    { level: 6, prize: 10000, stop: 5000, wrong: 2500 },
-    { level: 16, prize: 1000000, stop: 0, wrong: 0 }
+    { level: 1, prize: 1000, stop: 0, wrong: 0, title: "Hebreu no Egito" },
+    { level: 2, prize: 2000, stop: 1000, wrong: 500, title: "Fugitivo de Faraó" },
+    { level: 3, prize: 3000, stop: 2000, wrong: 1000, title: "Atravessador do Mar" },
+    { level: 4, prize: 4000, stop: 3000, wrong: 1500, title: "Peregrino do Deserto" },
+    { level: 5, prize: 5000, stop: 4000, wrong: 2000, title: "Bebedor da Rocha" },
+    { level: 6, prize: 10000, stop: 5000, wrong: 2500, title: "Comedor de Maná" },
+    { level: 7, prize: 20000, stop: 10000, wrong: 5000, title: "Observador da Nuvem" },
+    { level: 8, prize: 30000, stop: 20000, wrong: 10000, title: "Guerreiro de Josué" },
+    { level: 9, prize: 40000, stop: 30000, wrong: 15000, title: "Espia da Terra" },
+    { level: 10, prize: 50000, stop: 40000, wrong: 20000, title: "Conquistador de Jericó" },
+    { level: 11, prize: 100000, stop: 50000, wrong: 25000, title: "Juiz de Israel" },
+    { level: 12, prize: 200000, stop: 100000, wrong: 50000, title: "Valente de Davi" },
+    { level: 13, prize: 300000, stop: 200000, wrong: 100000, title: "Voz do Profeta" },
+    { level: 14, prize: 400000, stop: 300000, wrong: 150000, title: "Apóstolo do Rei" },
+    { level: 15, prize: 500000, stop: 400000, wrong: 200000, title: "Coluna da Igreja" },
+    { level: 16, prize: 1000000, stop: 0, wrong: 0, title: "Cidadão do Céu" }
 ];
