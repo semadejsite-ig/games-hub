@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", sans-serif;
+  --color-slate-950: #020617;
+  /* Ensure slate-950 existence if missing, but it should be standard */
+}
+
+/* Global Application Styles */
+body {
+  background: radial-gradient(circle at center, #1e3a8a 0%, #0f172a 100%);
+  /* equivalent to blue-900 to slate-900 */
+  color: white;
+  min-height: 100vh;
+  overflow-x: hidden;
+  font-family: var(--font-sans);
+}
