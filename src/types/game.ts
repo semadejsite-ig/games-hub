@@ -1,10 +1,10 @@
 export type Difficulty = 'easy' | 'medium' | 'hard' | 'million';
 
 export interface Question {
-  id: number;
+  id: string | number;
   text: string;
   options: string[]; // Always 4 options
-  correctDetails: string; // Explanation or full text of correct answer for validation if needed, or just index
+  correctDetails?: string; // Explanation or full text of correct answer for validation if needed, or just index
   correctOptionIndex: number; // 0-3
   difficulty: Difficulty;
 }
