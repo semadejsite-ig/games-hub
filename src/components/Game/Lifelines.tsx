@@ -28,7 +28,14 @@ export function Lifelines({ lifelines, onUse, disabled }: LifelinesProps) {
         `}
             >
                 <div className="mb-1">{icon}</div>
-                <span className="text-[10px] md:text-xs font-bold uppercase text-center leading-tight max-w-[60px]">{label}</span>
+                <div className="flex flex-col items-center">
+                    <span className="text-[10px] md:text-xs font-bold uppercase text-center leading-tight max-w-[60px]">{label}</span>
+                    {state.type === 'skip' && state.usesLeft! > 0 && (
+                        <span className="text-[10px] bg-blue-800 px-1.5 rounded-full mt-1 border border-blue-400">
+                            {state.usesLeft}x
+                        </span>
+                    )}
+                </div>
             </button>
         );
     };

@@ -13,11 +13,12 @@ const INITIAL_STATE: GameState = {
     status: 'playing',
     lifelines: {
         cards: { type: 'cards', available: true, used: false },
-        placa: { type: 'placa', available: true, used: false },
-        guests: { type: 'guests', available: true, used: false },
-        skip: { type: 'skip', available: true, used: false },
+        placa: { type: 'placa', available: true, used: false }, // Irmãos
+        guests: { type: 'guests', available: true, used: false }, // Pastor
+        skip: { type: 'skip', available: true, used: false, usesLeft: 3 }, // Livramento (3x)
     },
     eliminatedOptions: [],
+    lifelineResult: null
 };
 
 export const useGameState = () => {
@@ -79,8 +80,9 @@ export const useGameState = () => {
 
         const candidates = dbQuestions.filter(q => q.difficulty === difficulty && !usedIds.includes(q.id));
         if (candidates.length === 0) {
-            // Resort to any difficulty if ran out? Or just return null (error state usually)
-            return null;
+            // If ran out of specific difficulty, try to find any unused question
+            const fallback = dbQuestions.filter(q => !usedIds.includes(q.id));
+            return fallback.length > 0 ? fallback[Math.floor(Math.random() * fallback.length)] : null;
         }
         return candidates[Math.floor(Math.random() * candidates.length)];
     }, [dbQuestions]);
@@ -133,6 +135,7 @@ export const useGameState = () => {
                 stopPrize: ladderInfo?.stop || 0, // Stop prize updates
                 wrongPrize: nextLadder?.wrong || 0,
                 eliminatedOptions: [], // Reset lifeline effects
+                lifelineResult: null // Reset modal
             }));
 
             if (nextQ) {
@@ -162,23 +165,41 @@ export const useGameState = () => {
         }));
     };
 
+    const closeLifelineModal = () => {
+        setGameState(prev => ({ ...prev, lifelineResult: null }));
+    };
+
     // Handle Lifelines
     const useLifeline = (type: LifelineType) => {
         if (!gameState.lifelines[type].available) return;
+        if (!currentQuestion) return;
 
         if (type === 'skip') {
+            // Logic for Skip (Livramento) - 3 Uses
+            const currentUses = gameState.lifelines.skip.usesLeft ?? 0;
+            if (currentUses <= 0) return;
+
             const newQ = getQuestionForLevel(gameState.currentLevel, usedQuestionIds);
             if (newQ) {
                 setCurrentQuestion(newQ);
-                // Add old question back to pool? Or keep it used? 
-                // Currently keeping used.
+                setUsedQuestionIds(prev => [...prev, newQ.id]); // Mark new one as used
+
                 setGameState(prev => ({
                     ...prev,
-                    lifelines: { ...prev.lifelines, [type]: { ...prev.lifelines[type], available: false, used: true } }
+                    lifelineResult: null,
+                    lifelines: {
+                        ...prev.lifelines,
+                        [type]: {
+                            ...prev.lifelines[type],
+                            usesLeft: currentUses - 1,
+                            available: (currentUses - 1) > 0, // Still available if > 0
+                            used: (currentUses - 1) === 0 // Mark "used" (grayed out) only if 0 left
+                        }
+                    }
                 }));
             }
-        } else if (type === 'cards') {
-            if (!currentQuestion) return;
+        }
+        else if (type === 'cards') { // Cortar Joio
             const wrongIndices = [0, 1, 2, 3].filter(i => i !== currentQuestion.correctOptionIndex);
             const toEliminate = wrongIndices.sort(() => 0.5 - Math.random()).slice(0, 2);
 
@@ -187,9 +208,62 @@ export const useGameState = () => {
                 eliminatedOptions: toEliminate,
                 lifelines: { ...prev.lifelines, [type]: { ...prev.lifelines[type], available: false, used: true } }
             }));
-        } else {
+        }
+        else if (type === 'guests') { // Pastor
+            // Logic: High probability of being right on easy levels, lower on hard
+            const correct = currentQuestion.correctOptionIndex;
+            let suggestion = correct;
+
+            // Error chance: Easy 10%, Medium 30%, Hard 60%
+            let errorChance = 0.1;
+            if (currentQuestion.difficulty === 'medium') errorChance = 0.3;
+            if (currentQuestion.difficulty === 'hard') errorChance = 0.6;
+            if (currentQuestion.difficulty === 'million') errorChance = 0.8;
+
+            if (Math.random() < errorChance) {
+                // Pick a wrong option
+                const wrong = [0, 1, 2, 3].filter(i => i !== correct);
+                suggestion = wrong[Math.floor(Math.random() * wrong.length)];
+            }
+
             setGameState(prev => ({
                 ...prev,
+                lifelineResult: { type: 'guests', suggestion },
+                lifelines: { ...prev.lifelines, [type]: { ...prev.lifelines[type], available: false, used: true } }
+            }));
+        }
+        else if (type === 'placa') { // Irmãos
+            // Logic: Generate distribution biased towards correct answer
+            const correct = currentQuestion.correctOptionIndex;
+            let stats = [0, 0, 0, 0];
+
+            // "Bias" strength depends on difficulty (easier = church knows more)
+            let confidence = 0.7; // 70% of votes go to correct
+            if (currentQuestion.difficulty === 'medium') confidence = 0.5;
+            if (currentQuestion.difficulty === 'hard') confidence = 0.3; // Confused church
+
+            let remaining = 100;
+
+            // Set correct option
+            stats[correct] = Math.floor(remaining * confidence);
+            remaining -= stats[correct];
+
+            // Distribute rest randomly
+            for (let i = 0; i < 4; i++) {
+                if (i !== correct) {
+                    if (i === 3) {
+                        stats[i] = remaining; // Last one gets rest
+                    } else {
+                        const share = Math.floor(Math.random() * remaining);
+                        stats[i] = share;
+                        remaining -= share;
+                    }
+                }
+            }
+
+            setGameState(prev => ({
+                ...prev,
+                lifelineResult: { type: 'placa', stats },
                 lifelines: { ...prev.lifelines, [type]: { ...prev.lifelines[type], available: false, used: true } }
             }));
         }
@@ -201,6 +275,7 @@ export const useGameState = () => {
         handleAnswer,
         handleStop,
         useLifeline,
+        closeLifelineModal,
         restartGame: startGame,
         loading
     };

@@ -15,6 +15,13 @@ export interface LifelineState {
   type: LifelineType;
   available: boolean;
   used: boolean;
+  usesLeft?: number; // For "Livramento" (Skip)
+}
+
+export interface LifelineResult {
+  type: LifelineType;
+  suggestion?: number; // Index for Pastor
+  stats?: number[]; // Percentages for Irmãos
 }
 
 export type GameStatus = 'playing' | 'won' | 'lost' | 'stopped';
@@ -34,4 +41,5 @@ export interface GameState {
     skip: LifelineState;
   };
   eliminatedOptions: number[]; // Indices of options eliminated by "Cards" or similar logic?
+  lifelineResult: LifelineResult | null; // Result to show in Modal
 }

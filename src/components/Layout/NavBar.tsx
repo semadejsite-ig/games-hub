@@ -43,12 +43,12 @@ export function NavBar() {
                             </button>
                         </div>
                     ) : (
-                        <button
-                            onClick={signInWithGoogle}
+                        <Link
+                            href="/auth/login"
                             className="flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-bold transition-colors shadow-lg shadow-blue-900/20"
                         >
                             <LogIn size={16} /> ENTRAR
-                        </button>
+                        </Link>
                     )}
                 </div>
             </div>
