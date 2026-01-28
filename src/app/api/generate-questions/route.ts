@@ -13,7 +13,7 @@ export async function POST(request: Request) {
     console.log(`Generating with Gemini 2.5 Flash (Topic: ${topic})...`);
 
     const prompt = `
-      Gere ${amount} perguntas bíblicas sobre o tema "${topic}" para um jogo estilo Show do Milhão.
+      Gere ${amount} perguntas bíblicas sobre o tema "${topic}" para um jogo estilo Show do Milhão (agora chamado Mestre da Palavra).
       Dificuldade desejada: ${difficulty}.
       
       Retorne APENAS um JSON válido (sem markdown, sem \`\`\`) com este formato exacto:

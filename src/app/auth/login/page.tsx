@@ -161,25 +161,17 @@ export default function LoginPage() {
                     </form>
 
                     {mode === 'login' && (
-                        <>
-                            <div className="flex justify-between items-center mt-6 text-sm">
-                                <button onClick={() => setMode('forgot')} className="text-gray-500 hover:text-white transition-colors">Esqueceu a senha?</button>
-                            </div>
-
-                            <div className="relative my-6">
-                                <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-slate-800"></div></div>
-                                <div className="relative flex justify-center text-xs uppercase"><span className="bg-slate-900 px-2 text-gray-500">Ou continue com</span></div>
-                            </div>
-
+                        <div className="flex justify-between items-center mt-6 text-sm">
+                            <button onClick={() => setMode('forgot')} className="text-gray-500 hover:text-white transition-colors">Esqueceu a senha?</button>
                         </div>
-                </>
                     )}
 
-                {mode === 'forgot' && (
-                    <button onClick={() => setMode('login')} className="block w-full text-center text-gray-500 hover:text-white text-sm mt-6">
-                        Voltar para Login
-                    </button>
-                )}
+                    {mode === 'forgot' && (
+                        <button onClick={() => setMode('login')} className="block w-full text-center text-gray-500 hover:text-white text-sm mt-6">
+                            Voltar para Login
+                        </button>
+                    )}
+                </div>
             </div>
         </div>
     );

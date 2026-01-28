@@ -38,7 +38,7 @@ export default function Home() {
               </div>
 
               <h3 className="text-2xl font-bold text-white mb-2 group-hover:text-yellow-400 transition-colors">
-                Show do Milhão
+                Mestre da Palavra
               </h3>
               <p className="text-sm text-gray-400 mb-6 flex-1">
                 Teste seus conhecimentos bíblicos e tente chegar ao prêmio máximo de 1 milhão de pontos!
