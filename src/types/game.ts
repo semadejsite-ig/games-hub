@@ -42,4 +42,5 @@ export interface GameState {
   };
   eliminatedOptions: number[]; // Indices of options eliminated by "Cards" or similar logic?
   lifelineResult: LifelineResult | null; // Result to show in Modal
+  timeLeft: number;
 }

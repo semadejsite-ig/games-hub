@@ -32,13 +32,21 @@ export default function LoginPage() {
                 router.push('/');
             }
             else if (mode === 'register') {
-                const { error } = await supabase.auth.signUp({
+                const { data, error } = await supabase.auth.signUp({
                     email,
                     password,
                     options: { data: { full_name: fullName } }
                 });
                 if (error) throw error;
-                setMessage('Cadastro realizado! Verifique seu email para confirmar.');
+
+                // If email confirmation is disabled in Supabase, we get a session immediately.
+                if (data.session) {
+                    router.push('/');
+                    return;
+                }
+
+                // Otherwise, assume verification is needed
+                setMessage('Cadastro realizado! Se necessário, verifique seu email.');
                 setMode('login');
             }
             else if (mode === 'forgot') {

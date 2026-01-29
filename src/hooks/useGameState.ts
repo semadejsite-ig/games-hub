@@ -18,7 +18,8 @@ const INITIAL_STATE: GameState = {
         skip: { type: 'skip', available: true, used: false, usesLeft: 3 }, // Livramento (3x)
     },
     eliminatedOptions: [],
-    lifelineResult: null
+    lifelineResult: null,
+    timeLeft: 30
 };
 
 export const useGameState = () => {
@@ -86,6 +87,37 @@ export const useGameState = () => {
         }
         return candidates[Math.floor(Math.random() * candidates.length)];
     }, [dbQuestions]);
+
+    // Timer Logic
+    useEffect(() => {
+        if (gameState.status !== 'playing' || !currentQuestion) return;
+
+        const timer = setInterval(() => {
+            setGameState(prev => {
+                // Double check status inside updater to be safe
+                if (prev.status !== 'playing') {
+                    clearInterval(timer);
+                    return prev;
+                }
+
+                const newTime = prev.timeLeft - 1;
+
+                if (newTime <= 0) {
+                    clearInterval(timer);
+                    return {
+                        ...prev,
+                        status: 'lost',
+                        statusReason: 'timeout', // Optional: could add this to GameState for specific Game Over msg
+                        accumulatedMoney: prev.wrongPrize,
+                        timeLeft: 0
+                    };
+                }
+                return { ...prev, timeLeft: newTime };
+            });
+        }, 1000);
+
+        return () => clearInterval(timer);
+    }, [gameState.status, currentQuestion]);
 
     // Initialize Game
     const startGame = useCallback(() => {
@@ -189,6 +221,7 @@ export const useGameState = () => {
                     ...prev,
                     lifelineResult: null,
                     eliminatedOptions: [], // Reset 50/50 on skip
+                    timeLeft: 30, // Reset Timer on Skip
                     lifelines: {
                         ...prev.lifelines,
                         [type]: {

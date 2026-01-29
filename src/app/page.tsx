@@ -1,8 +1,13 @@
+'use client';
+
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Play, Trophy, Star } from 'lucide-react';
+import { Play, Trophy, Star, ChevronRight, LogOut, LayoutDashboard, Users } from 'lucide-react';
 import { Leaderboard } from '@/components/Platform/Leaderboard';
 
 export default function Home() {
+  const router = useRouter();
+
   return (
     <div className="max-w-7xl mx-auto px-4 py-8 w-full">
 
@@ -24,7 +29,35 @@ export default function Home() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
         {/* Left Column: Games */}
-        <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+          {/* Card: Ligas / Grupos */}
+          <div
+            onClick={() => router.push('/leagues')}
+            className="bg-slate-900 border border-slate-800 rounded-2xl p-6 hover:border-blue-500/50 transition-all cursor-pointer group relative overflow-hidden"
+          >
+            <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity">
+              <Trophy size={100} />
+            </div>
+
+            <div className="flex items-center gap-4 mb-4">
+              <div className="p-3 bg-blue-600/20 rounded-xl text-blue-400 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                <Users size={32} />
+              </div>
+              <div>
+                <h3 className="text-xl font-bold text-white group-hover:text-blue-400 transition-colors">Meus Grupos</h3>
+                <span className="text-xs text-blue-500 font-bold uppercase tracking-wider">NOVIDADE</span>
+              </div>
+            </div>
+
+            <p className="text-sm text-gray-400 mb-6">
+              Crie grupos com sua igreja, convide amigos e veja quem é o Mestre da Palavra no ranking privado!
+            </p>
+
+            <div className="flex items-center text-blue-400 text-sm font-bold group-hover:translate-x-2 transition-transform">
+              Ver Ligas <ChevronRight size={16} />
+            </div>
+          </div>
 
           {/* Game Card: Show do Milhão */}
           <Link

@@ -14,7 +14,7 @@ export function AnswerButton({ option, index, state = 'default', onClick, disabl
         return <div className="h-16 w-full invisible" />;
     }
 
-    const baseStyles = "relative w-full p-4 rounded-full border-2 text-white font-bold text-lg transition-all transform active:scale-95 flex items-center shadow-lg";
+    const baseStyles = "relative w-full p-2.5 md:p-4 rounded-full border-2 text-white font-bold text-sm md:text-lg transition-all transform active:scale-95 flex items-center shadow-lg";
 
     const variants = {
         default: "bg-blue-900 border-blue-500 hover:bg-blue-800 hover:border-yellow-400",
