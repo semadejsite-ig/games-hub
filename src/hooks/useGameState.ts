@@ -167,7 +167,8 @@ export const useGameState = () => {
                 stopPrize: ladderInfo?.stop || 0, // Stop prize updates
                 wrongPrize: nextLadder?.wrong || 0,
                 eliminatedOptions: [], // Reset lifeline effects
-                lifelineResult: null // Reset modal
+                lifelineResult: null, // Reset modal
+                timeLeft: 30 // Reset Timer on Next Level
             }));
 
             if (nextQ) {
